@@ -1,2 +1,2 @@
+Kanban Board - Estalv-IA:
 - [Kanban Board](https://github.com/users/viictorferre/projects/2)
-- [Issues](https://github.com/viictorferre/Software-Engineering-G11/issues)

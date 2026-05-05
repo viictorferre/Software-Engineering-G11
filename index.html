@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Estalv-IA | Financial dashboard</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true">E</div>
+        <div>
+          <strong>Estalv-IA</strong>
+          <span>Clear personal finance</span>
+        </div>
+      </div>
+
+      <nav class="nav-tabs" aria-label="Main sections">
+        <button class="nav-tab active" type="button" data-view="dashboard">
+          <span aria-hidden="true">D</span>
+          Dashboard
+        </button>
+        <button class="nav-tab" type="button" data-view="transactions">
+          <span aria-hidden="true">T</span>
+          Transactions
+        </button>
+        <button class="nav-tab" type="button" data-view="budgets">
+          <span aria-hidden="true">B</span>
+          Budgets
+        </button>
+        <button class="nav-tab" type="button" data-view="recommendations">
+          <span aria-hidden="true">R</span>
+          Recommendations
+        </button>
+        <button class="nav-tab" type="button" data-view="privacy">
+          <span aria-hidden="true">P</span>
+          Privacy
+        </button>
+      </nav>
+    </aside>
+
+    <main class="app-shell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">MVP v1.0 - Sprint 2</p>
+          <h1>Monthly control</h1>
+        </div>
+        <div class="month-chip" id="currentMonth"></div>
+      </header>
+
+      <section class="view active" id="dashboard" aria-labelledby="dashboard-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Overview</p>
+            <h2 id="dashboard-title">Financial situation</h2>
+          </div>
+          <button class="secondary-button" type="button" id="resetDemo">Restore demo</button>
+        </div>
+
+        <div class="kpi-grid" aria-label="Main indicators">
+          <article class="kpi income">
+            <span>Income</span>
+            <strong id="incomeTotal">EUR 0</strong>
+          </article>
+          <article class="kpi expense">
+            <span>Expenses</span>
+            <strong id="expenseTotal">EUR 0</strong>
+          </article>
+          <article class="kpi balance">
+            <span>Balance</span>
+            <strong id="balanceTotal">EUR 0</strong>
+          </article>
+          <article class="kpi saving">
+            <span>Estimated savings</span>
+            <strong id="savingRate">0%</strong>
+          </article>
+        </div>
+
+        <div class="dashboard-grid">
+          <section class="panel" aria-labelledby="categories-title">
+            <div class="panel-header">
+              <h3 id="categories-title">Expenses by category</h3>
+            </div>
+            <div class="category-bars" id="categoryBars"></div>
+          </section>
+
+          <section class="panel" aria-labelledby="latest-title">
+            <div class="panel-header">
+              <h3 id="latest-title">Latest movements</h3>
+            </div>
+            <div class="transaction-list compact" id="latestTransactions"></div>
+          </section>
+        </div>
+      </section>
+
+      <section class="view" id="transactions" aria-labelledby="transactions-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Register</p>
+            <h2 id="transactions-title">Transactions</h2>
+          </div>
+        </div>
+
+        <div class="split-layout">
+          <form class="panel form-panel" id="transactionForm">
+            <h3>New transaction</h3>
+            <label>
+              Type
+              <select id="transactionType" required>
+                <option value="expense">Expense</option>
+                <option value="income">Income</option>
+              </select>
+            </label>
+            <label>
+              Amount
+              <input id="transactionAmount" type="number" min="0.01" step="0.01" placeholder="24.50" required />
+            </label>
+            <label>
+              Description
+              <input id="transactionDescription" type="text" maxlength="50" placeholder="Grocery shopping" required />
+            </label>
+            <label>
+              Suggested category
+              <select id="transactionCategory" required></select>
+            </label>
+            <label>
+              Date
+              <input id="transactionDate" type="date" required />
+            </label>
+            <button class="primary-button" type="submit">Save transaction</button>
+          </form>
+
+          <section class="panel" aria-labelledby="history-title">
+            <div class="panel-header">
+              <h3 id="history-title">History</h3>
+              <select id="categoryFilter" aria-label="Filter by category">
+                <option value="all">All</option>
+              </select>
+            </div>
+            <div class="transaction-list" id="transactionList"></div>
+          </section>
+        </div>
+      </section>
+
+      <section class="view" id="budgets" aria-labelledby="budgets-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Planning</p>
+            <h2 id="budgets-title">Budgets</h2>
+          </div>
+        </div>
+        <div class="split-layout">
+          <form class="panel form-panel" id="budgetForm">
+            <h3>Set budget limit</h3>
+            <label>
+              Category
+              <select id="budgetCategory" required></select>
+            </label>
+            <label>
+              Monthly limit
+              <input id="budgetLimit" type="number" min="1" step="1" placeholder="200" required />
+            </label>
+            <button class="primary-button" type="submit">Save budget</button>
+          </form>
+
+          <div class="budget-grid" id="budgetGrid"></div>
+        </div>
+      </section>
+
+      <section class="view" id="recommendations" aria-labelledby="recommendations-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Savings</p>
+            <h2 id="recommendations-title">Personalized recommendations</h2>
+          </div>
+        </div>
+        <div class="recommendation-list" id="recommendationList"></div>
+      </section>
+
+      <section class="view" id="privacy" aria-labelledby="privacy-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Trust</p>
+            <h2 id="privacy-title">Privacy and data</h2>
+          </div>
+        </div>
+        <div class="privacy-layout">
+          <article class="panel">
+            <h3>Stored data</h3>
+            <p>
+              This Sprint 2 version stores transactions only in the user's browser through localStorage.
+            </p>
+          </article>
+          <article class="panel">
+            <h3>Information usage</h3>
+            <p>
+              Amounts, categories and dates are used to calculate summaries, budgets and recommendations.
+            </p>
+          </article>
+          <article class="panel">
+            <h3>Next improvement</h3>
+            <p>
+              A real account-based version would require authentication, secure database storage and sensitive data encryption.
+            </p>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>

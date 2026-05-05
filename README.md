@@ -16,47 +16,20 @@ Estalv-IA helps students, young adults and early professionals understand where 
 
 ## Sprint 2: Web Prototype
 
-The first version of the web app is built with core web technologies:
+For Sprint 2 we created a first prototype of the Estalv-IA web app. The goal of this version is to show how the app could work and to test the main idea before building a more advanced version.
 
-- HTML for page structure.
-- CSS for visual design and responsive layout.
-- JavaScript for app logic.
-- localStorage to save data in the browser without a backend.
+The prototype lets the user add income and expenses, see a monthly summary, check recent transactions, view expenses by category, manage simple budgets and receive basic saving recommendations.
 
-This choice is intentional: it lets the team learn the real foundations of the web without starting directly with frameworks, servers or databases.
+## Project Files
 
-## Included Features
+The prototype is inside the folder `Sprint 2 Estalv-IA prototype`.
 
-- Monthly dashboard with income, expenses, balance and savings rate.
-- Income and expense registration.
-- Transaction history.
-- Simple automatic category suggestion based on the description.
-- Expenses grouped by category.
-- Editable category budgets with visual alerts.
-- Personalized recommendations based on the entered data.
-- Privacy and data usage section.
-
-## Sprint 2 Scope
-
-This prototype covers the Sprint 2 issues labelled `Sprint 2` in the GitHub Project:
-
-- Design easy to use interface.
-- Test expense tracking functionality.
-- Implement expense tracking feature.
-- Implement income tracking feature.
-- Implement monthly financial overview.
-- Implement budget limit feature.
-- Implement expense categorization feature.
-- Design main dashboard UI.
+- `Sprint 2 Estalv-IA prototype/index.html`: contains the main structure of the web page. It includes the dashboard, transactions section, budgets section, recommendations section and privacy section.
+- `Sprint 2 Estalv-IA prototype/styles.css`: contains the visual design of the web page, such as colours, spacing, cards, buttons and the responsive layout.
+- `Sprint 2 Estalv-IA prototype/app.js`: contains the behaviour of the prototype. It saves transactions, updates the dashboard, calculates totals, suggests categories and updates budgets.
+- `Sprint 2 Estalv-IA prototype/TECH_STACK.md`: explains the technologies we chose for this first version and possible future improvements.
+- `Sprint 2 Estalv-IA prototype/TESTING.md`: explains the basic tests used to check that the Sprint 2 features work correctly.
 
 ## How To Open The Web App
 
-Open `index.html` directly in the browser.
-
-## Technical Recommendation
-
-For Sprint 2, the project should stay on plain HTML, CSS and JavaScript. Once the prototype is clear, the natural next step would be migrating it to React with Vite if reusable components, routes, more complex state or API integration become necessary.
-
-See also: `TECH_STACK.md`.
-
-See also: `TESTING.md`.
+Open `Sprint 2 Estalv-IA prototype/index.html` directly in the browser.

@@ -1,56 +1,32 @@
 # Technology Recommendation
 
-This project should evolve in phases. Since the team already has programming fundamentals but little experience creating a web app from scratch, the best decision is not to use the most complex technology, but the one that helps the team learn, deliver value and avoid unnecessary blockers.
-
-## Current Phase: Sprint 2
+## Current Phase: Sprint 2 Python Prototype
 
 Use:
 
-- HTML
-- CSS
-- JavaScript
-- localStorage
+- Python 3
+- Python standard library HTTP server
+- Local JSON storage
+- Unit tests with `unittest`
 
-Reason: these are the real foundations of any web app. They allow the team to create a functional prototype without a backend, complex installations or framework dependencies.
+Reason: this keeps the prototype simple, easy to run and fully focused on Python. It avoids external dependencies while preserving the same dashboard, transactions, budgets and recommendations that the previous browser prototype had.
 
-## Next Phase
+## Application Structure
 
-Once the prototype is validated, move to:
+- `app.py` renders the web interface and handles local HTTP routes.
+- `estalvia_core.py` contains the finance logic.
+- `data/estalvia_state.json` is created automatically when the user saves data.
+- `tests/test_core.py` checks the calculations, category suggestions, budgets and recommendations.
 
-- React
-- Vite
-- Modern JavaScript or TypeScript
+## Future Improvements
 
-Reason: React makes it easier to split the app into components, reuse views and maintain the code if the project grows.
+If the project grows, the next Python step could be:
 
-## Recommended Backend Later
-
-If the app needs real users, login and persistent data:
-
-- Node.js with Express for a simple API.
-- SQLite for prototypes.
-- PostgreSQL if the project grows.
-
-Reason: JavaScript can be used in both frontend and backend, so the team can learn one coherent stack.
-
-## Recommended AI Later
-
-For a first version, real AI is not required. Recommendations can be generated with simple rules based on expenses, categories and balance.
-
-If real AI is needed later:
-
-- Python for data analysis or custom models.
-- An external AI API for recommendations written in natural language.
-
-## Recommended Learning Order
-
-1. Understand the HTML structure.
-2. Learn CSS layout: flexbox, grid and responsive design.
-3. Manipulate the DOM with JavaScript.
-4. Save data with localStorage.
-5. Split code into small functions.
-6. Move to React only when the simple version already works.
+- Flask or FastAPI for cleaner routing.
+- SQLite for structured local storage.
+- User authentication and encrypted storage for real personal finance data.
+- A Python recommendation model or AI API integration for richer savings advice.
 
 ## Team Decision
 
-For Sprint 2, the recommended stack is HTML + CSS + JavaScript. It is enough to satisfy the MVP acceptance criteria and gives the team a solid foundation before jumping into frameworks.
+For Sprint 2, the stack is now Python. The prototype remains an MVP and keeps the original product behavior: add transactions, review monthly totals, manage budgets and receive rule-based recommendations.

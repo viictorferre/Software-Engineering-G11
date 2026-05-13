@@ -1,5 +1,7 @@
 # Estalv-IA
 
+[![Python CI](https://github.com/viictorferre/Software-Engineering-G11/actions/workflows/python-ci.yml/badge.svg)](https://github.com/viictorferre/Software-Engineering-G11/actions/workflows/python-ci.yml)
+
 Software Engineering G11 project for creating a technology startup focused on personal finance.
 
 ## Team
@@ -14,22 +16,39 @@ Software Engineering G11 project for creating a technology startup focused on pe
 
 Estalv-IA helps students, young adults and early professionals understand where their money goes, control budgets and receive simple recommendations to save better.
 
-## Sprint 2: Web Prototype
+## Sprint 2: Python Prototype
 
 For Sprint 2 we created a first prototype of the Estalv-IA web app. The goal of this version is to show how the app could work and to test the main idea before building a more advanced version.
 
 The prototype lets the user add income and expenses, see a monthly summary, check recent transactions, view expenses by category, manage simple budgets and receive basic saving recommendations.
 
+The repository also includes a GitHub Actions CI workflow. It runs automatically on every push and pull request, verifies that the Python files compile and runs the unit tests.
+
 ## Project Files
 
 The prototype is inside the folder `Sprint 2 Estalv-IA prototype`.
 
-- `Sprint 2 Estalv-IA prototype/index.html`: contains the main structure of the web page. It includes the dashboard, transactions section, budgets section, recommendations section and privacy section.
-- `Sprint 2 Estalv-IA prototype/styles.css`: contains the visual design of the web page, such as colours, spacing, cards, buttons and the responsive layout.
-- `Sprint 2 Estalv-IA prototype/app.js`: contains the behaviour of the prototype. It saves transactions, updates the dashboard, calculates totals, suggests categories and updates budgets.
-- `Sprint 2 Estalv-IA prototype/TECH_STACK.md`: explains the technologies we chose for this first version and possible future improvements.
-- `Sprint 2 Estalv-IA prototype/TESTING.md`: explains the basic tests used to check that the Sprint 2 features work correctly.
+- `Sprint 2 Estalv-IA prototype/app.py`: contains the Python web app and local HTTP server.
+- `Sprint 2 Estalv-IA prototype/estalvia_core.py`: contains the financial logic for totals, categories, budgets and recommendations.
+- `Sprint 2 Estalv-IA prototype/tests/test_core.py`: contains unit tests for the main Python logic.
+- `Sprint 2 Estalv-IA prototype/TECH_STACK.md`: explains the Python technology decision and possible future improvements.
+- `Sprint 2 Estalv-IA prototype/TESTING.md`: explains the automated and manual tests used to check the Sprint 2 features.
+- `.github/workflows/python-ci.yml`: runs the CI pipeline on every push and pull request.
 
 ## How To Open The Web App
 
-Open `Sprint 2 Estalv-IA prototype/index.html` directly in the browser.
+Run:
+
+```powershell
+cd "Sprint 2 Estalv-IA prototype"
+python app.py
+```
+
+Then open `http://127.0.0.1:8000` in the browser.
+
+## How To Run Tests
+
+```powershell
+cd "Sprint 2 Estalv-IA prototype"
+python -m unittest discover -s tests
+```

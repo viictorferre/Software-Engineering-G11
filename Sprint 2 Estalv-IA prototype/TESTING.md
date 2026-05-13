@@ -1,6 +1,35 @@
-# Sprint 2 Testing
+# Sprint 2 Python Testing
 
-This file documents the functional checks used to validate the Sprint 2 prototype.
+This file documents the checks used to validate the Python version of the Sprint 2 prototype.
+
+## Automated Tests
+
+Run:
+
+```powershell
+python -m unittest discover -s tests
+```
+
+Expected result: all tests pass.
+
+The tests validate:
+
+- Category suggestions for common descriptions such as `coffee`, `metro` and income.
+- Monthly income, expense, balance and saving-rate calculations.
+- Monthly transaction filtering.
+- Expense totals by category.
+- Budget status changes from `On track` to `Warning` and `Exceeded`.
+- Recommendation generation from the current financial state.
+
+## Manual Browser Checks
+
+Run:
+
+```powershell
+python app.py
+```
+
+Open `http://127.0.0.1:8000`.
 
 ## Expense Tracking Test
 
@@ -8,17 +37,17 @@ Goal: confirm that users can register expenses and see them reflected in the app
 
 Steps:
 
-1. Open `index.html` in a browser.
+1. Open the app in the browser.
 2. Go to `Transactions`.
 3. Select `Expense`.
-4. Enter an amount, description, category and date.
+4. Enter an amount, description, category or `Auto suggest`, and date.
 5. Click `Save transaction`.
 6. Confirm that the app returns to `Dashboard`.
 7. Confirm that total expenses increase.
 8. Confirm that the new expense appears in `Latest movements` and `History`.
 9. Confirm that the expense category appears in `Expenses by category`.
 
-Expected result: the expense is saved in localStorage and all dashboard values update immediately.
+Expected result: the expense is saved in local JSON storage and all dashboard values update.
 
 ## Income Tracking Test
 
@@ -59,10 +88,8 @@ Steps:
 1. Go to `Transactions`.
 2. Select `Expense`.
 3. Type a description such as `coffee`, `metro`, `dinner` or `university book`.
-4. Confirm that the suggested category changes automatically.
+4. Leave category as `Auto suggest`.
+5. Click `Save transaction`.
+6. Confirm that the saved transaction uses the expected category.
 
-Expected result: the app suggests the category before the transaction is saved, and the user can still change it manually.
-
-## Browser Smoke Test
-
-A browser smoke test was run with Microsoft Edge in headless mode. It verified that the app loads, opens the transaction view, saves an expense and returns to the dashboard without console errors.
+Expected result: the Python logic suggests and saves the category automatically, while still allowing the user to choose a category manually.

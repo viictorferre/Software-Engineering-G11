@@ -1,9 +1,5 @@
 # Sprint 4 Planning
 
-## Planning Basis
-
-This plan is based on the current Kanban objectives and the Sprint 3 work already present in the repository. Anything from Sprint 3 that is not implemented yet is planned for Sprint 4.
-
 ## Sprint 4 Goal
 
 Improve the Estalv-IA MVP from a working prototype into a more complete and trustworthy finance app by adding notifications, strengthening privacy/security, testing the new behaviour and preparing final delivery material.

@@ -6,14 +6,14 @@ Improve the Estalv-IA MVP from a working prototype into a more complete and trus
 
 ## Sprint 4 Backlog
 
-| Priority | Issue | Task | Reason |
-|---|---|---|---|
-| High | #8 | Implement notification system | Users should receive budget or spending alerts before limits are exceeded. |
-| High | #10 | Ensure data security and privacy | Personal finance data needs clear privacy handling. |
-| High | #12 | Test notification system | Notification behaviour should be reliable and covered by tests. |
-| Medium | #13 | Conduct usability testing | The team needs user feedback to validate ease of use. |
-| Medium | #14 | Prepare project documentation and presentation | Final delivery needs clear explanation of the product and process. |
-| Medium | #15 | Implement AI-based saving recommendations | Current recommendations are rule-based, so this is the next improvement. |
+| Priority | Task | Reason |
+|---|---|---|
+| High | Implement notification system | Users should receive budget or spending alerts before limits are exceeded. |
+| High | Ensure data security and privacy | Personal finance data needs clear privacy handling. |
+| High | Test notification system | Notification behaviour should be reliable and covered by tests. |
+| Medium | Conduct usability testing | The team needs user feedback to validate ease of use. |
+| Medium | Prepare project documentation and presentation | Final delivery needs clear explanation of the product and process. |
+| Medium | Implement AI-based saving recommendations | Current recommendations are rule-based, so this is the next improvement. |
 
 ## Planned Work
 

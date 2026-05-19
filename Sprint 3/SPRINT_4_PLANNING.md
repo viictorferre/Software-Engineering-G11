@@ -15,4 +15,4 @@ Improve the Estalv-IA MVP from a working prototype into a more complete and trus
 | Medium | Prepare project documentation and presentation | Final delivery needs clear explanation of the product and process. |
 | Medium | Implement AI-based saving recommendations | Current recommendations are rule-based, so this is the next improvement. |
 
-## All is updates on the kanban
+## All is updated on the kanban

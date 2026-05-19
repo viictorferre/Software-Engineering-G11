@@ -31,3 +31,9 @@ Then open `http://127.0.0.1:8000` in the browser.
 cd "Sprint 2 Estalv-IA prototype"
 python -m unittest discover -s tests
 ```
+
+## Sprint 3 And Sprint 4
+
+Sprint 3 work is documented in `Sprint 3`.
+
+That folder also includes the Sprint 4 planning document based on the current Kanban objectives and the unfinished Sprint 3 work.

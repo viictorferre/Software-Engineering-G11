@@ -6,6 +6,7 @@ The development objective for Sprint 3 was to turn the Estalv-IA prototype into 
 
 ## Completed Work
 
+- We have edited the code inside the Sprint 2 Estalv-IA prototype
 - Converted the prototype into a Python web application.
 - Preserved the main MVP features:
   - income tracking,

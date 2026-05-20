@@ -6,6 +6,7 @@ from datetime import date
 from estalvia_core import (
     build_budget_alerts,
     build_recommendations,
+    build_transactions_csv,
     budget_status,
     create_demo_transactions,
     get_budget_snapshots,
@@ -86,6 +87,30 @@ class EstalviaCoreTest(unittest.TestCase):
         self.assertIn("Food budget almost reached", titles)
         self.assertIn("Transport budget exceeded", titles)
 
+    def test_transactions_can_be_exported_to_csv(self) -> None:
+        transactions = [
+            {
+                "type": "income",
+                "amount": 1000,
+                "category": "Income",
+                "description": "Salary",
+                "date": "2026-05-01",
+            },
+            {
+                "type": "expense",
+                "amount": 25.5,
+                "category": "Food",
+                "description": "Lunch",
+                "date": "2026-05-02",
+            },
+        ]
+
+        csv_content = build_transactions_csv(transactions)
+
+        self.assertIn("Date,Type,Category,Description,Amount", csv_content)
+        self.assertIn("2026-05-02,expense,Food,Lunch,25.5", csv_content)
+        self.assertIn("2026-05-01,income,Income,Salary,1000", csv_content)
         
+               
 if __name__ == "__main__":
     unittest.main()

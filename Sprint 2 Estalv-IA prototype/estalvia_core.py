@@ -1,8 +1,9 @@
 from __future__ import annotations
 
+import csv
 from datetime import date
+from io import StringIO
 from uuid import uuid4
-
 
 CATEGORIES = [
     "Food",
@@ -356,5 +357,27 @@ def build_budget_alerts(budgets: list[dict], transactions: list[dict]) -> list[d
                     "body": f"You only have {format_money(remaining)} left in this category.",
                 }
             )
+
+    return alerts
+
+def build_transactions_csv(transactions: list[dict]) -> str:
+    output = StringIO()
+    writer = csv.writer(output)
+
+    writer.writerow(["Date", "Type", "Category", "Description", "Amount"])
+
+    for transaction in sorted_transactions(transactions):
+        writer.writerow(
+            [
+                transaction.get("date", ""),
+                transaction.get("type", ""),
+                transaction.get("category", ""),
+                transaction.get("description", ""),
+                transaction.get("amount", 0),
+            ]
+        )
+
+    return output.getvalue()
+
 
     return alerts

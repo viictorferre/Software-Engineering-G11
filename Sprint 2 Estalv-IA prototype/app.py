@@ -13,6 +13,7 @@ from estalvia_core import (
     CATEGORIES,
     build_recommendations,
     build_budget_alerts,    
+    build_transactions_csv,
     create_demo_transactions,
     create_id,
     default_budgets,
@@ -210,6 +211,16 @@ h3 {
 
 .section-heading {
   margin-bottom: 18px;
+}
+
+.actions-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.actions-row form {
+  display: block;
 }
 
 .primary-button,
@@ -728,10 +739,15 @@ def render_dashboard(transactions: list[dict], budgets: list[dict]) -> bytes:
     summary = get_expense_by_category(month_transactions)
     latest = sorted_transactions(transactions)[:5]
 
-    reset_action = """
-    <form method="post" action="/reset">
-      <button class="secondary-button" type="submit">Restore demo</button>
-    </form>
+    dashboard_actions = """
+    <div class="actions-row">
+      <form method="get" action="/export">
+        <button class="secondary-button" type="submit">Export CSV</button>
+      </form>
+      <form method="post" action="/reset">
+        <button class="secondary-button" type="submit">Restore demo</button>
+      </form>
+    </div>
     """
 
     if summary:
@@ -769,7 +785,7 @@ def render_dashboard(transactions: list[dict], budgets: list[dict]) -> bytes:
         alerts_html = ""
     body = f"""
     <section>
-      {section_heading("Overview", "Financial situation", reset_action)}
+      {section_heading("Overview", "Financial situation", dashboard_actions)}
       {alerts_html}
       <div class="kpi-grid" aria-label="Main indicators">
         <article class="kpi"><span>Income</span><strong>{escape(format_money(totals["income"]))}</strong></article>
@@ -965,6 +981,8 @@ class EstalviaHandler(BaseHTTPRequestHandler):
 
         if path == "/":
             self.send_html(render_dashboard(transactions, budgets))
+        elif path == "/export":
+            self.send_csv(transactions)
         elif path == "/transactions":
             selected_filter = query.get("category", ["all"])[0]
             if selected_filter not in [*CATEGORIES, "all"]:
@@ -1024,6 +1042,7 @@ class EstalviaHandler(BaseHTTPRequestHandler):
                 "date": transaction_date,
             }
         )
+
         save_state(transactions, budgets)
         self.redirect("/")
 
@@ -1060,6 +1079,16 @@ class EstalviaHandler(BaseHTTPRequestHandler):
         self.send_header("Location", location)
         self.end_headers()
 
+    def send_csv(self, transactions: list[dict]) -> None:
+        content = build_transactions_csv(transactions).encode("utf-8")
+
+        self.send_response(HTTPStatus.OK)
+        self.send_header("Content-Type", "text/csv; charset=utf-8")
+        self.send_header("Content-Disposition", 'attachment; filename="estalvia-transactions.csv"')
+        self.send_header("Content-Length", str(len(content)))
+        self.end_headers()
+        self.wfile.write(content)
+
     def send_html(self, content: bytes) -> None:
         self.send_response(HTTPStatus.OK)
         self.send_header("Content-Type", "text/html; charset=utf-8")
@@ -1069,7 +1098,6 @@ class EstalviaHandler(BaseHTTPRequestHandler):
 
     def log_message(self, format: str, *args: object) -> None:
         return
-
 
 def run_server(host: str = HOST, port: int = PORT) -> None:
     server = ThreadingHTTPServer((host, port), EstalviaHandler)

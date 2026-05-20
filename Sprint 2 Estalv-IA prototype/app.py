@@ -12,6 +12,7 @@ from urllib.parse import parse_qs, urlparse
 from estalvia_core import (
     CATEGORIES,
     build_recommendations,
+    build_budget_alerts,    
     create_demo_transactions,
     create_id,
     default_budgets,
@@ -718,8 +719,10 @@ def transaction_row(transaction: dict) -> str:
 
 
 def render_dashboard(transactions: list[dict], budgets: list[dict]) -> bytes:
-    del budgets
+    
     month_transactions = get_month_transactions(transactions)
+    budget_alerts = build_budget_alerts(budgets, month_transactions)
+    
     totals = get_totals(month_transactions)
     saving_rate = get_saving_rate(totals)
     summary = get_expense_by_category(month_transactions)
@@ -752,9 +755,22 @@ def render_dashboard(transactions: list[dict], budgets: list[dict]) -> bytes:
     if not latest_rows:
         latest_rows = '<div class="empty-state">Add a transaction to get started.</div>'
 
+    if budget_alerts:
+        alerts_html = "\n".join(
+            f"""
+            <article class="alert">
+              <strong>{escape(alert["title"])}</strong>
+              <p>{escape(alert["body"])}</p>
+            </article>
+            """
+            for alert in budget_alerts
+        )
+    else:
+        alerts_html = ""
     body = f"""
     <section>
       {section_heading("Overview", "Financial situation", reset_action)}
+      {alerts_html}
       <div class="kpi-grid" aria-label="Main indicators">
         <article class="kpi"><span>Income</span><strong>{escape(format_money(totals["income"]))}</strong></article>
         <article class="kpi"><span>Expenses</span><strong>{escape(format_money(totals["expense"]))}</strong></article>

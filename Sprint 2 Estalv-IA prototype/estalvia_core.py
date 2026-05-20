@@ -327,3 +327,34 @@ def build_recommendations(transactions: list[dict]) -> list[dict]:
     )
 
     return recommendations
+
+
+def build_budget_alerts(budgets: list[dict], transactions: list[dict]) -> list[dict]:
+    snapshots = get_budget_snapshots(budgets, transactions)
+    alerts = []
+
+    for snapshot in snapshots:
+        category = snapshot["category"]
+        label = snapshot["label"]
+        spent = snapshot["spent"]
+        limit = snapshot["limit"]
+        remaining = snapshot["remaining"]
+
+        if label == "Exceeded":
+            alerts.append(
+                {
+                    "level": "danger",
+                    "title": f"{category} budget exceeded",
+                    "body": f"You have spent {format_money(spent)} out of {format_money(limit)}.",
+                }
+            )
+        elif label == "Warning":
+            alerts.append(
+                {
+                    "level": "warning",
+                    "title": f"{category} budget almost reached",
+                    "body": f"You only have {format_money(remaining)} left in this category.",
+                }
+            )
+
+    return alerts

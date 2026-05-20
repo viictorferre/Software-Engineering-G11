@@ -4,6 +4,7 @@ import unittest
 from datetime import date
 
 from estalvia_core import (
+    build_budget_alerts,
     build_recommendations,
     budget_status,
     create_demo_transactions,
@@ -69,5 +70,22 @@ class EstalviaCoreTest(unittest.TestCase):
         self.assertIn("Automate a small goal", titles)
 
 
+    def test_budget_alerts_warn_and_exceeded_budgets(self) -> None:
+        budgets = [
+            {"category": "Food", "limit": 100},
+            {"category": "Transport", "limit": 50},
+        ]
+        transactions = [
+            {"type": "expense", "amount": 85, "category": "Food", "date": "2026-05-01"},
+            {"type": "expense", "amount": 70, "category": "Transport", "date": "2026-05-02"},
+        ]
+
+        alerts = build_budget_alerts(budgets, transactions)
+        titles = [alert["title"] for alert in alerts]
+
+        self.assertIn("Food budget almost reached", titles)
+        self.assertIn("Transport budget exceeded", titles)
+
+        
 if __name__ == "__main__":
     unittest.main()

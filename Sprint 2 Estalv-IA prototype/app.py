@@ -34,7 +34,7 @@ from estalvia_core import (
 DATA_FILE = Path("data") / "estalvia_state.json"
 HOST = "127.0.0.1"
 PORT = int(os.environ.get("PORT", "8000"))
-
+ 
 
 STYLE = """
 :root {

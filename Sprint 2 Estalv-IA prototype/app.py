@@ -311,6 +311,58 @@ h3 {
   gap: 12px;
 }
 
+.cashflow-chart {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  min-height: 220px;
+  align-items: end;
+  padding-top: 10px;
+}
+
+.cashflow-item {
+  display: grid;
+  gap: 10px;
+  text-align: center;
+}
+
+.cashflow-stage {
+  height: 145px;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  align-items: end;
+  justify-content: center;
+}
+
+.cashflow-bar {
+  width: 72%;
+  min-height: 8px;
+  border-radius: 8px 8px 0 0;
+  background: var(--green);
+}
+
+.cashflow-bar.expense {
+  background: var(--red);
+}
+
+.cashflow-bar.balance {
+  background: var(--blue);
+}
+
+.cashflow-bar.negative {
+  background: var(--red);
+}
+
+.cashflow-label {
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 900;
+}
+
+.cashflow-value {
+  font-weight: 900;
+}
+
 .bar-row {
   display: grid;
   grid-template-columns: 110px minmax(0, 1fr) 90px;
@@ -574,6 +626,14 @@ button:focus-visible {
     font-size: 1.45rem;
   }
 
+  .cashflow-chart {
+  grid-template-columns: 1fr;
+}
+
+.cashflow-stage {
+  height: 120px;
+}
+
   .bar-row {
     grid-template-columns: 1fr;
     gap: 6px;
@@ -728,6 +788,34 @@ def transaction_row(transaction: dict) -> str:
     </article>
     """
 
+def cashflow_chart_html(totals: dict) -> str:
+    """Create a simple visual chart for monthly income, expenses and balance."""
+    income = float(totals.get("income", 0))
+    expense = float(totals.get("expense", 0))
+    balance = float(totals.get("balance", 0))
+    max_value = max(income, expense, abs(balance), 1)
+
+    chart_items = [
+        ("Income", income, "income"),
+        ("Expenses", expense, "expense"),
+        ("Balance", abs(balance), "balance negative" if balance < 0 else "balance"),
+    ]
+
+    return "\n".join(
+        f"""
+        <div class="cashflow-item">
+          <div class="cashflow-stage" aria-hidden="true">
+            <div class="cashflow-bar {css_class}" style="height: {max(round((value / max_value) * 100), 4)}%"></div>
+          </div>
+          <div>
+            <div class="cashflow-label">{escape(label)}</div>
+            <div class="cashflow-value">{escape(format_money(balance if label == "Balance" else value))}</div>
+          </div>
+        </div>
+        """
+        for label, value, css_class in chart_items
+    )
+
 
 def render_dashboard(transactions: list[dict], budgets: list[dict]) -> bytes:
     
@@ -738,6 +826,7 @@ def render_dashboard(transactions: list[dict], budgets: list[dict]) -> bytes:
     saving_rate = get_saving_rate(totals)
     summary = get_expense_by_category(month_transactions)
     latest = sorted_transactions(transactions)[:5]
+    cashflow_chart = cashflow_chart_html(totals)
 
     dashboard_actions = """
     <div class="actions-row">
@@ -797,6 +886,7 @@ def render_dashboard(transactions: list[dict], budgets: list[dict]) -> bytes:
         <section class="panel" aria-labelledby="categories-title">
           <div class="panel-header"><h3 id="categories-title">Expenses by category</h3></div>
           <div class="category-bars">{category_bars}</div>
+          
         </section>
         <section class="panel" aria-labelledby="latest-title">
           <div class="panel-header"><h3 id="latest-title">Latest movements</h3></div>

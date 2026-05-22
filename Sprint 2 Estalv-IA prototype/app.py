@@ -283,12 +283,37 @@ h3 {
   font-size: 1.75rem;
 }
 
-.dashboard-grid,
-.split-layout {
+.insight-card {
   display: grid;
-  grid-template-columns: minmax(0, 1.1fr) minmax(340px, 0.9fr);
-  gap: 18px;
+  gap: 10px;
+  border-left: 4px solid var(--green);
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
 }
+
+.insight-card.warning {
+  border-left-color: var(--yellow);
+}
+
+.insight-card.danger {
+  border-left-color: var(--red);
+}
+
+.insight-card p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.insight-value {
+  font-size: 1.45rem;
+  font-weight: 900;
+  color: var(--ink);
+}
+
 
 .panel {
   padding: 18px;
@@ -816,6 +841,29 @@ def cashflow_chart_html(totals: dict) -> str:
     )
 
 
+def smart_saving_goal_html(totals: dict) -> str:
+    balance = float(totals.get("balance", 0))
+    if balance > 0:
+        suggested_saving = balance * 0.25
+        return f"""
+        <section class="panel insight-card">
+          <div class="panel-header"><h3>Smart saving goal</h3></div>
+          <p>You could save:</p>
+          <div class="insight-value">{escape(format_money(suggested_saving))}</div>
+          <p>This is 25% of your current positive balance.</p>
+        </section>
+        """
+
+    return f"""
+        <section class="panel insight-card danger">
+          <div class="panel-header"><h3>Smart saving goal</h3></div>
+          <p>No saving goal suggested yet.</p>
+          <div class="insight-value">{escape(format_money(0))}</div>
+          <p>Try reducing expenses before setting a monthly saving goal.</p>
+        </section>
+        """
+
+
 def render_dashboard(transactions: list[dict], budgets: list[dict]) -> bytes:
     
     month_transactions = get_month_transactions(transactions)
@@ -826,6 +874,7 @@ def render_dashboard(transactions: list[dict], budgets: list[dict]) -> bytes:
     summary = get_expense_by_category(month_transactions)
     latest = sorted_transactions(transactions)[:5]
     cashflow_chart = cashflow_chart_html(totals)
+    saving_goal_card = smart_saving_goal_html(totals)
 
     dashboard_actions = """
     <div class="actions-row">
@@ -888,6 +937,8 @@ def render_dashboard(transactions: list[dict], budgets: list[dict]) -> bytes:
             {cashflow_chart}
           </div>
         </section>
+
+        {saving_goal_card}
 
         <section class="panel" aria-labelledby="categories-title">
           <div class="panel-header"><h3 id="categories-title">Expenses by category</h3></div>

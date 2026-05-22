@@ -789,7 +789,6 @@ def transaction_row(transaction: dict) -> str:
     """
 
 def cashflow_chart_html(totals: dict) -> str:
-    """Create a simple visual chart for monthly income, expenses and balance."""
     income = float(totals.get("income", 0))
     expense = float(totals.get("expense", 0))
     balance = float(totals.get("balance", 0))
@@ -883,11 +882,18 @@ def render_dashboard(transactions: list[dict], budgets: list[dict]) -> bytes:
         <article class="kpi"><span>Estimated savings</span><strong>{saving_rate}%</strong></article>
       </div>
       <div class="dashboard-grid">
+        <section class="panel" aria-labelledby="cashflow-title">
+          <div class="panel-header"><h3 id="cashflow-title">Income vs expenses</h3></div>
+          <div class="cashflow-chart" aria-label="Monthly income, expenses and balance comparison">
+            {cashflow_chart}
+          </div>
+        </section>
+
         <section class="panel" aria-labelledby="categories-title">
           <div class="panel-header"><h3 id="categories-title">Expenses by category</h3></div>
           <div class="category-bars">{category_bars}</div>
-          
         </section>
+
         <section class="panel" aria-labelledby="latest-title">
           <div class="panel-header"><h3 id="latest-title">Latest movements</h3></div>
           <div class="transaction-list compact">{latest_rows}</div>

@@ -378,6 +378,3 @@ def build_transactions_csv(transactions: list[dict]) -> str:
         )
 
     return output.getvalue()
-
-
-    return alerts

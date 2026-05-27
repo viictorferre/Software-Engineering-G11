@@ -19,7 +19,7 @@ The tests validate:
 - Monthly transaction filtering.
 - Expense totals by category.
 - Budget status changes from `On track` to `Warning` and `Exceeded`.
-- Recommendation generation from the current financial state.
+- AI-assisted recommendation generation from the current financial state and budget alerts.
 
 ## Manual Browser Checks
 
@@ -93,3 +93,17 @@ Steps:
 6. Confirm that the saved transaction uses the expected category.
 
 Expected result: the Python logic suggests and saves the category automatically, while still allowing the user to choose a category manually.
+
+## AI Advisor Test
+
+Goal: confirm that the public recommendations page gives personalized saving suggestions.
+
+Steps:
+
+1. Add an income transaction.
+2. Add expenses in at least one category.
+3. Add a budget limit and enough expenses to trigger a warning or exceeded state.
+4. Go to `AI Advisor`.
+5. Confirm that the page suggests a category reduction, a saving transfer or a budget-focused action.
+
+Expected result: the advisor uses the current month data and does not require the internal Privacy page.

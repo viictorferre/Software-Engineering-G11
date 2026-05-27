@@ -8,13 +8,14 @@ Estalv-IA is a personal finance prototype for students, young adults and early p
 - See monthly income, expenses, balance and estimated savings.
 - Review recent movements and expenses by category.
 - Create monthly budget limits by category.
-- Get simple saving recommendations based on spending rules.
+- Get AI-assisted saving recommendations based on monthly income, expenses, categories and budgets.
 - Store local data in `data/estalvia_state.json`.
+- Use a public-facing navigation without the previous internal Privacy page.
 
 ## Project Files
 
 - `app.py`: Python web app and local HTTP server for the finance dashboard.
-- `estalvia_core.py`: Python business logic for totals, categories, budgets and recommendations.
+- `estalvia_core.py`: Python business logic for totals, categories, budgets and AI-assisted recommendations.
 - `tests/test_core.py`: unit tests for the financial logic.
 - `requirements.txt`: Python dependency list.
 

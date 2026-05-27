@@ -13,6 +13,6 @@ Improve the Estalv-IA MVP from a working prototype into a more complete and trus
 | High | Test notification system | Notification behaviour should be reliable and covered by tests. |
 | Medium | Conduct usability testing | The team needs user feedback to validate ease of use. |
 | Medium | Prepare project documentation and presentation | Final delivery needs clear explanation of the product and process. |
-| Medium | Implement AI-based saving recommendations | Current recommendations are rule-based, so this is the next improvement. |
+| Medium | Improve AI-based saving recommendations | The first AI Advisor approximation is implemented; the next step is improving its accuracy and presentation. |
 
 ## All is updated on the kanban

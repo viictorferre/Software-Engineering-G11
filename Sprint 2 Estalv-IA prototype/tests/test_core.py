@@ -67,8 +67,19 @@ class EstalviaCoreTest(unittest.TestCase):
 
         titles = [recommendation["title"] for recommendation in build_recommendations(transactions)]
 
-        self.assertIn("Review Studies", titles)
-        self.assertIn("Automate a small goal", titles)
+        self.assertIn("Reduce Studies by 10%", titles)
+        self.assertIn("Automate a realistic saving transfer", titles)
+
+    def test_recommendations_include_budget_alerts(self) -> None:
+        budgets = [{"category": "Food", "limit": 100}]
+        transactions = [
+            {"type": "income", "amount": 1000, "category": "Income", "date": "2026-05-01"},
+            {"type": "expense", "amount": 120, "category": "Food", "date": "2026-05-02"},
+        ]
+
+        titles = [recommendation["title"] for recommendation in build_recommendations(transactions, budgets)]
+
+        self.assertIn("Food budget exceeded", titles)
 
 
     def test_budget_alerts_warn_and_exceeded_budgets(self) -> None:

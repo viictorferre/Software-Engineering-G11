@@ -29,6 +29,7 @@ from estalvia_core import (
     normalize_transactions,
     sorted_transactions,
     suggest_category,
+    get_biggest_expense_of_month,
 )
 
 
@@ -870,6 +871,27 @@ def render_dashboard(transactions: list[dict], budgets: list[dict]) -> bytes:
     latest = sorted_transactions(transactions)[:5]
     cashflow_chart = cashflow_chart_html(totals)
     saving_goal_card = smart_saving_goal_html(totals)
+    biggest_expense = get_biggest_expense_of_month(transactions)
+
+    if biggest_expense:
+        biggest_expense_card = f"""
+        <div class="insight-card warning">
+            <h3>Biggest expense this month</h3>
+            <div class="insight-value">{escape(format_money(biggest_expense["amount"]))}</div>
+            <p>
+                {escape(biggest_expense["description"])} · 
+                {escape(biggest_expense["category"])} · 
+                {escape(format_transaction_date(biggest_expense["date"]))}
+            </p>
+        </div>
+        """
+    else:
+        biggest_expense_card = """
+        <div class="insight-card">
+            <h3>Biggest expense this month</h3>
+            <p>No expenses registered this month yet.</p>
+        </div>
+        """
 
     dashboard_actions = """
     <div class="actions-row">
@@ -926,6 +948,7 @@ def render_dashboard(transactions: list[dict], budgets: list[dict]) -> bytes:
         <article class="kpi"><span>Daily limit</span><strong>{escape(format_money(daily_limit))}</strong></article>
         <article class="kpi"><span>Estimated savings</span><strong>{saving_rate}%</strong></article>
       </div>
+      {biggest_expense_card}
       <div class="dashboard-grid">
         <section class="panel" aria-labelledby="cashflow-title">
           <div class="panel-header"><h3 id="cashflow-title">Income vs expenses</h3></div>

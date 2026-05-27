@@ -15,6 +15,7 @@ from estalvia_core import (
     get_saving_rate,
     get_totals,
     suggest_category,
+    get_biggest_expense_of_month,
 )
 
 
@@ -125,3 +126,43 @@ class EstalviaCoreTest(unittest.TestCase):
                
 if __name__ == "__main__":
     unittest.main()
+
+def test_get_biggest_expense_of_month_returns_largest_expense(self) -> None:
+    transactions = [
+        {
+            "type": "income",
+            "amount": 1000,
+            "category": "Income",
+            "date": "2026-05-01",
+        },
+        {
+            "type": "expense",
+            "amount": 40,
+            "category": "Food",
+            "date": "2026-05-03",
+            "description": "Groceries",
+        },
+        {
+            "type": "expense",
+            "amount": 120,
+            "category": "Shopping",
+            "date": "2026-05-12",
+            "description": "New headphones",
+        },
+        {
+            "type": "expense",
+            "amount": 20,
+            "category": "Transport",
+            "date": "2026-05-14",
+            "description": "Metro card",
+        },
+    ]
+
+    result = get_biggest_expense_of_month(
+        transactions,
+        today=date(2026, 5, 20),
+    )
+
+    self.assertEqual(result["amount"], 120)
+    self.assertEqual(result["category"], "Shopping")
+    self.assertEqual(result["description"], "New headphones")

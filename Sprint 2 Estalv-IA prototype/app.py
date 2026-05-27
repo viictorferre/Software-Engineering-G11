@@ -330,8 +330,7 @@ h3 {
 .category-bars,
 .transaction-list,
 .recommendation-list,
-.budget-grid,
-.privacy-layout {
+.budget-grid {
   display: grid;
   gap: 12px;
 }
@@ -570,15 +569,10 @@ button:focus-visible {
   margin-bottom: 8px;
 }
 
-.recommendation p,
-.privacy-layout p {
+.recommendation p {
   margin-bottom: 0;
   color: var(--muted);
   line-height: 1.55;
-}
-
-.privacy-layout {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
 .empty-state,
@@ -622,8 +616,7 @@ button:focus-visible {
   .kpi-grid,
   .dashboard-grid,
   .split-layout,
-  .budget-grid,
-  .privacy-layout {
+  .budget-grid {
     grid-template-columns: 1fr;
   }
 }
@@ -683,8 +676,7 @@ ROUTES = [
     ("/", "D", "Dashboard"),
     ("/transactions", "T", "Transactions"),
     ("/budgets", "B", "Budgets"),
-    ("/recommendations", "R", "Recommendations"),
-    ("/privacy", "P", "Privacy"),
+    ("/recommendations", "A", "AI Advisor"),
 ]
 
 
@@ -776,7 +768,7 @@ def layout(active_path: str, body: str) -> bytes:
     <main class="app-shell">
       <header class="topbar">
         <div>
-          <p class="eyebrow">MVP v1.0 - Python edition</p>
+          <p class="eyebrow">Public preview - AI Advisor</p>
           <h1>Monthly control</h1>
         </div>
         <div class="month-chip">{escape(month_label)}</div>
@@ -1076,7 +1068,7 @@ def render_budgets(transactions: list[dict], budgets: list[dict], error: str = "
     return layout("/budgets", body)
 
 
-def render_recommendations(transactions: list[dict]) -> bytes:
+def render_recommendations(transactions: list[dict], budgets: list[dict]) -> bytes:
     month_transactions = get_month_transactions(transactions)
     recommendations = "\n".join(
         f"""
@@ -1085,38 +1077,15 @@ def render_recommendations(transactions: list[dict]) -> bytes:
           <p>{escape(recommendation["body"])}</p>
         </article>
         """
-        for recommendation in build_recommendations(month_transactions)
+        for recommendation in build_recommendations(month_transactions, budgets)
     )
     body = f"""
     <section>
-      {section_heading("Savings", "Personalized recommendations")}
+      {section_heading("AI Advisor", "Personalized saving plan")}
       <div class="recommendation-list">{recommendations}</div>
     </section>
     """
     return layout("/recommendations", body)
-
-
-def render_privacy() -> bytes:
-    body = f"""
-    <section>
-      {section_heading("Trust", "Privacy and data")}
-      <div class="privacy-layout">
-        <article class="panel">
-          <h3>Stored data</h3>
-          <p>This Python version stores transactions and budgets in a local JSON file under the data folder.</p>
-        </article>
-        <article class="panel">
-          <h3>Information usage</h3>
-          <p>Amounts, categories and dates are used to calculate summaries, budgets and recommendations.</p>
-        </article>
-        <article class="panel">
-          <h3>Next improvement</h3>
-          <p>A real account-based version would require authentication, secure database storage and sensitive data encryption.</p>
-        </article>
-      </div>
-    </section>
-    """
-    return layout("/privacy", body)
 
 
 class EstalviaHandler(BaseHTTPRequestHandler):
@@ -1138,9 +1107,9 @@ class EstalviaHandler(BaseHTTPRequestHandler):
         elif path == "/budgets":
             self.send_html(render_budgets(transactions, budgets))
         elif path == "/recommendations":
-            self.send_html(render_recommendations(transactions))
+            self.send_html(render_recommendations(transactions, budgets))
         elif path == "/privacy":
-            self.send_html(render_privacy())
+            self.redirect("/")
         else:
             self.send_error(HTTPStatus.NOT_FOUND)
 

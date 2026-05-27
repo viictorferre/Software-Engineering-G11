@@ -276,7 +276,7 @@ def format_transaction_date(value: str) -> str:
     return parsed.strftime("%d %b %Y")
 
 
-def build_recommendations(transactions: list[dict]) -> list[dict]:
+def build_recommendations(transactions: list[dict], budgets: list[dict] | None = None) -> list[dict]:
     totals = get_totals(transactions)
     summary = get_expense_by_category(transactions)
     highest_category = None
@@ -284,46 +284,86 @@ def build_recommendations(transactions: list[dict]) -> list[dict]:
         highest_category = sorted(summary.items(), key=lambda item: item[1], reverse=True)[0]
 
     recommendations = []
+    saving_rate = get_saving_rate(totals)
 
     if totals["income"] == 0:
         recommendations.append(
             {
-                "title": "Register your income",
-                "body": "Adding income allows the app to calculate your savings rate and detect whether the month is balanced.",
+                "title": "Add income to unlock your plan",
+                "body": "The advisor needs this month's income to calculate savings capacity and detect whether spending is balanced.",
             }
         )
+        recommendations.append(
+            {
+                "title": "Start with category tracking",
+                "body": "Keep adding expenses by category so the advisor can identify the habits with the biggest saving potential.",
+            }
+        )
+        return recommendations
 
     if highest_category:
         category, amount = highest_category
+        reduction = amount * 0.1
+        share = round((amount / totals["income"]) * 100)
         recommendations.append(
             {
-                "title": f"Review {category}",
+                "title": f"Reduce {category} by 10%",
                 "body": (
-                    f"It is your highest spending category this month: {format_money(amount)}. "
-                    f"Reducing it by 10% would free up {format_money(amount * 0.1)}."
+                    f"This is your highest spending category at {format_money(amount)} "
+                    f"({share}% of income). A 10% reduction would free up {format_money(reduction)}."
                 ),
             }
         )
 
+    if budgets:
+        for alert in build_budget_alerts(budgets, transactions):
+            recommendations.append(
+                {
+                    "title": alert["title"],
+                    "body": f"{alert['body']} Prioritize this before adding new discretionary spending.",
+                }
+            )
+
     if totals["balance"] > 0:
+        suggested_saving = totals["balance"] * 0.25
         recommendations.append(
             {
-                "title": "Automate a small goal",
-                "body": f"You could set aside {format_money(totals['balance'] * 0.25)} this month.",
+                "title": "Automate a realistic saving transfer",
+                "body": (
+                    f"Your current balance is positive. Move {format_money(suggested_saving)} "
+                    "to savings now and keep the rest available for the month."
+                ),
             }
         )
     elif totals["expense"] > totals["income"]:
+        gap = totals["expense"] - totals["income"]
         recommendations.append(
             {
-                "title": "Prioritize variable expenses",
-                "body": "Your balance is negative. Start by reviewing leisure, transport and small purchases.",
+                "title": "Close the monthly gap first",
+                "body": (
+                    f"Expenses are {format_money(gap)} above income. Pause non-essential spending "
+                    "until the balance is back above zero."
+                ),
+            }
+        )
+
+    if saving_rate < 10 and totals["balance"] > 0:
+        target_balance = totals["income"] * 0.1
+        extra_needed = max(0, target_balance - totals["balance"])
+        recommendations.append(
+            {
+                "title": "Aim for a 10% savings rate",
+                "body": (
+                    f"Your estimated savings rate is {saving_rate}%. Freeing up "
+                    f"{format_money(extra_needed)} would put you close to a healthier 10% target."
+                ),
             }
         )
 
     recommendations.append(
         {
-            "title": "Keep a weekly habit",
-            "body": "A short weekly review prevents the budget from getting out of control at the end of the month.",
+            "title": "Review the plan weekly",
+            "body": "A short weekly review keeps budgets realistic and helps the advisor adapt before the end of the month.",
         }
     )
 

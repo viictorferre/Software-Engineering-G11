@@ -12,7 +12,7 @@ Software Engineering G11 project for creating a technology startup focused on pe
 
 ## Product Vision
 
-Estalv-IA helps students, young adults and early professionals understand where their money goes, control budgets and receive simple recommendations to save better.
+Estalv-IA helps students, young adults and early professionals understand where their money goes, control budgets and receive AI-assisted recommendations to save better.
 
 ## How To Open The Web App
 
@@ -24,6 +24,10 @@ python app.py
 ```
 
 Then open `http://127.0.0.1:8000` in the browser.
+
+## Current Public Preview
+
+The current version includes a public-facing AI Advisor tab. It analyzes the current month's income, expenses, category spending and budgets to suggest practical saving actions. The previous Privacy page has been removed from the public navigation for this preview.
 
 ## How To Run Tests
 

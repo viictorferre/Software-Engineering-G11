@@ -8,6 +8,7 @@ from http import HTTPStatus
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import parse_qs, urlparse
+from features.today_spending import calculate_today_spending
 from features.daily_spending_limit import calculate_daily_spending_limit
 
 from estalvia_core import (
@@ -867,6 +868,7 @@ def render_dashboard(transactions: list[dict], budgets: list[dict]) -> bytes:
     totals = get_totals(month_transactions)
     saving_rate = get_saving_rate(totals)
     summary = get_expense_by_category(month_transactions)
+    today_spending = calculate_today_spending(month_transactions)
     daily_limit = calculate_daily_spending_limit(totals["balance"])
     latest = sorted_transactions(transactions)[:5]
     cashflow_chart = cashflow_chart_html(totals)
@@ -945,6 +947,7 @@ def render_dashboard(transactions: list[dict], budgets: list[dict]) -> bytes:
         <article class="kpi"><span>Income</span><strong>{escape(format_money(totals["income"]))}</strong></article>
         <article class="kpi"><span>Expenses</span><strong>{escape(format_money(totals["expense"]))}</strong></article>
         <article class="kpi"><span>Balance</span><strong>{escape(format_money(totals["balance"]))}</strong></article>
+        <article class="kpi"><span>Spent today</span><strong>{escape(format_money(today_spending))}</strong></article>
         <article class="kpi"><span>Daily limit</span><strong>{escape(format_money(daily_limit))}</strong></article>
         <article class="kpi"><span>Estimated savings</span><strong>{saving_rate}%</strong></article>
       </div>

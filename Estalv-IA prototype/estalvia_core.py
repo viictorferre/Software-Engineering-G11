@@ -418,33 +418,3 @@ def build_transactions_csv(transactions: list[dict]) -> str:
         )
 
     return output.getvalue()
-
-def get_biggest_expense_of_month(
-    transactions: list[dict],
-    today: date | None = None,
-) -> dict | None:
-    """
-    Return the biggest expense of the current month.
-
-    If there are no expenses in the selected month, return None.
-    """
-    base = today or date.today()
-    month_transactions = get_month_transactions(transactions, base)
-
-    expenses = [
-        transaction
-        for transaction in month_transactions
-        if transaction["type"] == "expense"
-    ]
-
-    if not expenses:
-        return None
-
-    biggest_expense = max(expenses, key=lambda transaction: transaction["amount"])
-
-    return {
-        "amount": biggest_expense["amount"],
-        "category": biggest_expense["category"],
-        "date": biggest_expense["date"],
-        "description": biggest_expense.get("description", ""),
-    }

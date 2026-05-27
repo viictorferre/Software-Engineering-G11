@@ -1,6 +1,6 @@
 # Estalv-IA
 
-Software Engineering G11 project for creating a technology startup focused on personal finance.
+Software Engineering G11 project for a personal finance app focused on students, young adults and early professionals.
 
 ## Team
 
@@ -12,14 +12,23 @@ Software Engineering G11 project for creating a technology startup focused on pe
 
 ## Product Vision
 
-Estalv-IA helps students, young adults and early professionals understand where their money goes, control budgets and receive AI-assisted recommendations to save better.
+Estalv-IA helps users understand where their money goes during the month, control category budgets and receive practical saving suggestions based on their own income and expenses.
+
+## Development Process
+
+The project has been built in phases so the app could grow without losing the original MVP idea.
+
+- Sprint 2 started with the first working prototype of the finance dashboard and the main user flows: add income, add expenses, review monthly totals and check budgets.
+- Sprint 3 moved that prototype into Python. The goal was to keep the same behaviour while separating the interface from the finance calculations and adding tests.
+- The current public preview keeps the Python app, removes the internal Privacy tab from the navigation and adds an AI Advisor page with saving suggestions based on the current month.
+- Sprint 4 planning focuses on notifications, privacy/security improvements, usability testing and polishing the saving advice for a more complete delivery.
 
 ## How To Open The Web App
 
 Run:
 
 ```powershell
-cd "Sprint 2 Estalv-IA prototype"
+cd "Estalv-IA prototype"
 python app.py
 ```
 
@@ -27,17 +36,17 @@ Then open `http://127.0.0.1:8000` in the browser.
 
 ## Current Public Preview
 
-The current version includes a public-facing AI Advisor tab. It analyzes the current month's income, expenses, category spending and budgets to suggest practical saving actions. The previous Privacy page has been removed from the public navigation for this preview.
+The current version includes a public-facing AI Advisor tab. It reviews monthly income, expenses, category spending and budget status to suggest realistic saving actions. The suggestions are still part of the MVP: they are generated from the app's own rules and financial data, not from a final production AI service.
 
 ## How To Run Tests
 
 ```powershell
-cd "Sprint 2 Estalv-IA prototype"
+cd "Estalv-IA prototype"
 python -m unittest discover -s tests
 ```
 
-## Sprint 3 And Sprint 4
+## Project Documentation
 
-Sprint 3 work is documented in `Sprint 3`.
+Sprint 3 work is documented in `Sprint 3/DEVELOPMENT.md`.
 
-That folder also includes the Sprint 4 planning document based on the current Kanban objectives and the unfinished Sprint 3 work.
+Sprint 4 planning is documented in `Sprint 3/SPRINT_4_PLANNING.md`, based on the Kanban objectives and the work that still needs to be improved after Sprint 3.

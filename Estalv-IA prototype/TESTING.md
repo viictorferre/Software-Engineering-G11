@@ -1,6 +1,6 @@
-# Sprint 2 Python Testing
+# Python Prototype Testing
 
-This file documents the checks used to validate the Python version of the Sprint 2 prototype.
+This file documents the checks used to validate the Python version of Estalv-IA. The tests are written around the behaviour that users actually see in the app: transactions, monthly totals, budgets and saving advice.
 
 ## Automated Tests
 

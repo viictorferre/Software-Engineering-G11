@@ -87,6 +87,42 @@ class EstalviaCoreTest(unittest.TestCase):
         self.assertIn("Food budget almost reached", titles)
         self.assertIn("Transport budget exceeded", titles)
 
+    def test_budget_alerts_not_triggered_below_warning_threshold(self) -> None:
+        budgets = [{"category": "Food", "limit": 100}]
+        transactions = [
+            {"type": "expense", "amount": 40, "category": "Food", "date": "2026-05-01"},
+        ]
+
+        alerts = build_budget_alerts(budgets, transactions)
+
+        self.assertEqual(alerts, [])
+
+    def test_budget_alert_message_for_warning_budget(self) -> None:
+        budgets = [{"category": "Food", "limit": 100}]
+        transactions = [
+            {"type": "expense", "amount": 85, "category": "Food", "date": "2026-05-01"},
+        ]
+
+        alerts = build_budget_alerts(budgets, transactions)
+
+        self.assertEqual(len(alerts), 1)
+        self.assertEqual(alerts[0]["level"], "warning")
+        self.assertEqual(alerts[0]["title"], "Food budget almost reached")
+        self.assertIn("EUR 15.00 left", alerts[0]["body"])
+
+    def test_budget_alert_message_for_exceeded_budget(self) -> None:
+        budgets = [{"category": "Transport", "limit": 50}]
+        transactions = [
+            {"type": "expense", "amount": 70, "category": "Transport", "date": "2026-05-01"},
+        ]
+
+        alerts = build_budget_alerts(budgets, transactions)
+
+        self.assertEqual(len(alerts), 1)
+        self.assertEqual(alerts[0]["level"], "danger")
+        self.assertEqual(alerts[0]["title"], "Transport budget exceeded")
+        self.assertIn("EUR 70.00 out of EUR 50.00", alerts[0]["body"])
+
     def test_transactions_can_be_exported_to_csv(self) -> None:
         transactions = [
             {

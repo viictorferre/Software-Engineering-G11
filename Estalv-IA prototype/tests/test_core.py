@@ -9,13 +9,13 @@ from estalvia_core import (
     build_transactions_csv,
     budget_status,
     create_demo_transactions,
+    get_biggest_expense_of_month,
     get_budget_snapshots,
     get_expense_by_category,
     get_month_transactions,
     get_saving_rate,
     get_totals,
     suggest_category,
-    get_biggest_expense_of_month,
 )
 
 
@@ -56,7 +56,9 @@ class EstalviaCoreTest(unittest.TestCase):
 
     def test_budget_snapshots_include_remaining_amount(self) -> None:
         budgets = [{"category": "Food", "limit": 100}]
-        transactions = [{"type": "expense", "amount": 40, "category": "Food", "date": "2026-05-01"}]
+        transactions = [
+            {"type": "expense", "amount": 40, "category": "Food", "date": "2026-05-01"},
+        ]
 
         snapshots = get_budget_snapshots(budgets, transactions)
 
@@ -82,7 +84,6 @@ class EstalviaCoreTest(unittest.TestCase):
 
         self.assertIn("Food budget exceeded", titles)
 
-
     def test_budget_alerts_warn_and_exceeded_budgets(self) -> None:
         budgets = [
             {"category": "Food", "limit": 100},
@@ -98,6 +99,42 @@ class EstalviaCoreTest(unittest.TestCase):
 
         self.assertIn("Food budget almost reached", titles)
         self.assertIn("Transport budget exceeded", titles)
+
+    def test_budget_alerts_not_triggered_below_warning_threshold(self) -> None:
+        budgets = [{"category": "Food", "limit": 100}]
+        transactions = [
+            {"type": "expense", "amount": 40, "category": "Food", "date": "2026-05-01"},
+        ]
+
+        alerts = build_budget_alerts(budgets, transactions)
+
+        self.assertEqual(alerts, [])
+
+    def test_budget_alert_message_for_warning_budget(self) -> None:
+        budgets = [{"category": "Food", "limit": 100}]
+        transactions = [
+            {"type": "expense", "amount": 85, "category": "Food", "date": "2026-05-01"},
+        ]
+
+        alerts = build_budget_alerts(budgets, transactions)
+
+        self.assertEqual(len(alerts), 1)
+        self.assertEqual(alerts[0]["level"], "warning")
+        self.assertEqual(alerts[0]["title"], "Food budget almost reached")
+        self.assertIn("EUR 15.00 left", alerts[0]["body"])
+
+    def test_budget_alert_message_for_exceeded_budget(self) -> None:
+        budgets = [{"category": "Transport", "limit": 50}]
+        transactions = [
+            {"type": "expense", "amount": 70, "category": "Transport", "date": "2026-05-01"},
+        ]
+
+        alerts = build_budget_alerts(budgets, transactions)
+
+        self.assertEqual(len(alerts), 1)
+        self.assertEqual(alerts[0]["level"], "danger")
+        self.assertEqual(alerts[0]["title"], "Transport budget exceeded")
+        self.assertIn("EUR 70.00 out of EUR 50.00", alerts[0]["body"])
 
     def test_transactions_can_be_exported_to_csv(self) -> None:
         transactions = [
@@ -122,47 +159,47 @@ class EstalviaCoreTest(unittest.TestCase):
         self.assertIn("Date,Type,Category,Description,Amount", csv_content)
         self.assertIn("2026-05-02,expense,Food,Lunch,25.5", csv_content)
         self.assertIn("2026-05-01,income,Income,Salary,1000", csv_content)
-        
-               
+
+    def test_get_biggest_expense_of_month_returns_largest_expense(self) -> None:
+        transactions = [
+            {
+                "type": "income",
+                "amount": 1000,
+                "category": "Income",
+                "date": "2026-05-01",
+            },
+            {
+                "type": "expense",
+                "amount": 40,
+                "category": "Food",
+                "date": "2026-05-03",
+                "description": "Groceries",
+            },
+            {
+                "type": "expense",
+                "amount": 120,
+                "category": "Shopping",
+                "date": "2026-05-12",
+                "description": "New headphones",
+            },
+            {
+                "type": "expense",
+                "amount": 20,
+                "category": "Transport",
+                "date": "2026-05-14",
+                "description": "Metro card",
+            },
+        ]
+
+        result = get_biggest_expense_of_month(
+            transactions,
+            today=date(2026, 5, 20),
+        )
+
+        self.assertEqual(result["amount"], 120)
+        self.assertEqual(result["category"], "Shopping")
+        self.assertEqual(result["description"], "New headphones")
+
+
 if __name__ == "__main__":
     unittest.main()
-
-def test_get_biggest_expense_of_month_returns_largest_expense(self) -> None:
-    transactions = [
-        {
-            "type": "income",
-            "amount": 1000,
-            "category": "Income",
-            "date": "2026-05-01",
-        },
-        {
-            "type": "expense",
-            "amount": 40,
-            "category": "Food",
-            "date": "2026-05-03",
-            "description": "Groceries",
-        },
-        {
-            "type": "expense",
-            "amount": 120,
-            "category": "Shopping",
-            "date": "2026-05-12",
-            "description": "New headphones",
-        },
-        {
-            "type": "expense",
-            "amount": 20,
-            "category": "Transport",
-            "date": "2026-05-14",
-            "description": "Metro card",
-        },
-    ]
-
-    result = get_biggest_expense_of_month(
-        transactions,
-        today=date(2026, 5, 20),
-    )
-
-    self.assertEqual(result["amount"], 120)
-    self.assertEqual(result["category"], "Shopping")
-    self.assertEqual(result["description"], "New headphones")

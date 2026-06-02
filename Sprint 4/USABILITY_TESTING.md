@@ -2,7 +2,7 @@
 
 ## Objective
 
-The objective of this usability test is to evaluate whether users can easily understand and use the main Estalv-IA application flows.
+The objective of this usability test is to evaluate if the users can understand in an easy way the interface and use the main Estalv-IA application flows.
 
 The tested flows are:
 
@@ -12,25 +12,7 @@ The tested flows are:
 - Creating or updating a budget.
 - Reading the AI Advisor recommendations.
 
-## Method
 
-The test should be conducted with at least 3 users who match the target audience of the application: students, young adults or early professionals interested in managing their monthly personal finances.
-
-Each user should be asked to complete a short list of tasks while their interaction is observed. After completing the tasks, users should be asked for feedback about clarity, navigation and confidence while using the app.
-
-## Test Environment
-
-Run the current Python prototype locally.
-
-Command to run the app:
-
-cd "Estalv-IA prototype"
-
-python app.py
-
-Then open this URL in the browser:
-
-http://127.0.0.1:8000
 
 ## Test Tasks
 
@@ -71,34 +53,6 @@ Replace the placeholder rows after testing with real observations.
 - What was easy:
 - What was confusing:
 - Suggestions:
-
-## Usability Issues Identified
-
-Fill this section after completing the tests.
-
-### 1. AI Advisor clarity
-
-Some users may understand the AI Advisor as a final artificial intelligence feature, while the current version is still an MVP advisor based on financial rules and user data.
-
-Suggested improvement: add a short explanatory text at the top of the AI Advisor page.
-
-### 2. Transaction filter visibility
-
-Some users may not immediately notice the category filter in the transaction history.
-
-Suggested improvement: make the filter area more visually separated or add a small title such as "Search and filter".
-
-### 3. Budget form explanation
-
-Some users may not be fully sure whether the budget limit is monthly, weekly or total.
-
-Suggested improvement: change the label from "Monthly limit" to "Monthly category limit" and add a placeholder example.
-
-### 4. Restore demo action
-
-The "Restore demo" button may be confusing because it resets data without explaining the consequence.
-
-Suggested improvement: rename it to "Restore demo data" or add a confirmation message in a future iteration.
 
 
 ## Participants
@@ -164,6 +118,7 @@ The goal of this simulated test was to anticipate usability issues before conduc
 - What was easy: completing all tasks without external help.
 - What was confusing: the "Restore demo" button could be risky because it does not explain that data may be reset.
 - Suggestions: rename the button or add a confirmation message.
+  
 ## Positive Feedback
 
 - The dashboard was generally easy to understand because the main indicators are visible at the top.

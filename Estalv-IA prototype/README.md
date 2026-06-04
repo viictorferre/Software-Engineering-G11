@@ -6,9 +6,12 @@ This folder contains the current Python version of Estalv-IA. It comes from the 
 
 - Add income and expenses.
 - See monthly income, expenses, balance and estimated savings.
+- Review previous months and set a different saving target for each month.
 - Review recent movements and expenses by category.
 - Create monthly budget limits by category.
-- Get AI-assisted saving recommendations based on monthly income, expenses, categories and budgets.
+- Get an automatic AI Advisor saving plan with priority insight, goal progress, budget risk and next steps.
+- Ask an interactive AI Coach questions about savings, spending, budgets and balance, with saved chat history.
+- Use a hybrid AI mode: local Ollama model when available, rule-based fallback when not.
 - Store local data in `data/estalvia_state.json`.
 - Use public navigation focused on the product pages, without the previous internal Privacy tab.
 
@@ -17,7 +20,7 @@ This folder contains the current Python version of Estalv-IA. It comes from the 
 1. The first prototype defined the main screens and user flow for tracking money.
 2. Sprint 3 moved the app to Python while keeping the same dashboard behaviour.
 3. The finance calculations were moved into `estalvia_core.py` so they can be tested separately from the web interface.
-4. The latest preview adds the AI Advisor page as a first version of personalized saving advice.
+4. The latest preview adds a structured AI Advisor plan, an AI Coach with saved conversation history and editable monthly saving goals as a first version of personalized saving advice.
 
 ## Project Files
 
@@ -33,6 +36,22 @@ python app.py
 ```
 
 Then open `http://127.0.0.1:8000` in the browser.
+
+## Final Presentation Demo
+
+Use `Restore demo` from the dashboard before presenting. The demo data includes current-month expenses, budgets close to or over their limits, previous months for `Monthly Review`, custom saving goals and a saved AI Coach conversation.
+
+## Optional Ollama Mode
+
+The AI Coach can use Ollama locally. This keeps the demo free and avoids sending personal finance data to an external paid API.
+
+Install Ollama, then run:
+
+```powershell
+ollama run llama3.2
+```
+
+Run the app after that. If Ollama is not available, the AI Coach automatically uses the local fallback.
 
 ## Run Tests
 

@@ -1,6 +1,6 @@
 # Estalv-IA
 
-Software Engineering G11 project for a personal finance app focused on students, young adults and early professionals.
+Estalv-IA is a personal finance web app built for students and young adults. It helps users track income and expenses, control monthly budgets and receive saving suggestions based on their own data.
 
 ## Team
 
@@ -10,55 +10,58 @@ Software Engineering G11 project for a personal finance app focused on students,
 - Marco de Paco u231728
 - Daniel Ibanez u231958
 
-## Product Vision
+## Final Product
 
-Estalv-IA helps users understand where their money goes during the month, control category budgets and receive practical saving suggestions based on their own income and expenses.
+The final version is a Python web application with:
 
-## Development Process
+- Dashboard with monthly income, expenses, balance, daily limit and budget alerts.
+- Transaction registration with automatic category suggestions.
+- Budget limits by category.
+- Monthly review with custom saving goals per month.
+- AI Advisor with a structured saving plan.
+- Hybrid AI Coach with saved chat history, local Ollama support and rule-based fallback.
+- Automated tests and GitHub Actions CI.
 
-The project has been built in phases so the app could grow without losing the original MVP idea.
+## Development Phases
 
-- Sprint 2 started with the first working prototype of the finance dashboard and the main user flows: add income, add expenses, review monthly totals and check budgets.
-- Sprint 3 moved that prototype into Python. The goal was to keep the same behaviour while separating the interface from the finance calculations and adding tests.
-- The current public preview keeps the Python app, removes the internal Privacy tab from the navigation and adds AI Advisor and AI Coach pages with saving suggestions based on the current month.
-- Sprint 4 planning focuses on notifications, privacy/security improvements, usability testing and polishing the saving advice for a more complete delivery.
+- Sprint 2: first prototype and validation of the main finance tracking flow.
+- Sprint 3: migration to Python, local storage, separated finance logic and automated tests.
+- Sprint 4: final delivery work, usability review, UI polish, notifications, monthly review and AI Coach improvements.
 
-## How To Open The Web App
-
-Run:
+## Run The App
 
 ```powershell
 cd "Estalv-IA prototype"
 python app.py
 ```
 
-Then open `http://127.0.0.1:8000` in the browser.
+Open `http://127.0.0.1:8000` in the browser.
 
-## Current Public Preview
+The dashboard includes a `Restore demo` button with presentation data for budgets, previous months and AI Coach history.
 
-The current version includes a public-facing AI Advisor tab, an interactive AI Coach and a Monthly Review page. They review monthly income, expenses, category spending, budget status and custom saving target progress for each month. The Advisor now presents a structured saving plan, while the Coach keeps a saved conversation history and works as a hybrid system: it can use a local Ollama model when available, and falls back to the app's own rule-based logic when Ollama is not running.
+## Optional Ollama Mode
 
-The dashboard `Restore demo` action loads a final-presentation scenario with budget alerts, previous months, custom goals and AI Coach history.
-
-## Optional Local AI With Ollama
-
-To enable the smarter local AI mode without paid APIs:
+The AI Coach can use a local Ollama model without paid APIs:
 
 ```powershell
 ollama run llama3.2
 ```
 
-Keep Ollama available in the background, then run the web app normally. The AI Coach will use `llama3.2` by default through `http://127.0.0.1:11434`.
+If Ollama is not running, the app still works with its local rule-based coach.
 
-## How To Run Tests
+## Tests
 
 ```powershell
 cd "Estalv-IA prototype"
 python -m unittest discover -s tests
 ```
 
-## Project Documentation
+The GitHub Actions workflow also compiles the Python files and runs the tests on push and pull request.
 
-Sprint 3 work is documented in `Sprint 3/DEVELOPMENT.md`.
+## Repository Structure
 
-Sprint 4 planning is documented in `Sprint 3/SPRINT_4_PLANNING.md`, based on the Kanban objectives and the work that still needs to be improved after Sprint 3.
+- `Estalv-IA prototype/`: final Python application.
+- `Sprint 3/DEVELOPMENT.md`: Python implementation work.
+- `Sprint 4/PLANNING.md`: final sprint objectives and backlog.
+- `Sprint 4/USABILITY_TESTING.md`: usability review and conclusions.
+- `Kanban Board Estalv-IA.md`: project board link.

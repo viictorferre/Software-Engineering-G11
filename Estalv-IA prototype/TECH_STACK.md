@@ -1,45 +1,35 @@
-# Technology Recommendation
+# Technology Stack
 
-## Current Phase: Python Public Preview
+## Current Stack
 
-The app currently uses:
-
-- Python 3
+- Python 3.11
 - Python standard library HTTP server
 - Local JSON storage
-- Unit tests with `unittest`
-- GitHub Actions for basic CI checks
-- Optional local Ollama model for the AI Coach
+- `unittest` for automated tests
+- GitHub Actions for CI
+- Optional Ollama local model for the AI Coach
 
-This stack was chosen because the team needed a version that was simple to run in class, easy to review and focused on the product logic. It also lets us keep the same MVP behaviour from the first prototype while writing the core finance calculations in Python.
+## Why This Stack
+
+The team kept the stack small so the project is easy to run, review and explain during the final presentation. The app does not need external dependencies to work, and the core finance logic can be tested without starting the web server.
 
 ## Application Structure
 
-- `app.py` renders the web interface and handles local HTTP routes.
-- `estalvia_core.py` contains the finance logic used by the dashboard, budgets, AI Advisor, AI Coach and Ollama fallback flow.
-- `data/estalvia_state.json` is created automatically when the user saves data.
-- `tests/test_core.py` checks calculations, category suggestions, budget status and recommendations.
+- `app.py` handles routes, forms and HTML rendering.
+- `estalvia_core.py` contains calculations, budgets, monthly review, AI Advisor logic and the AI Coach fallback.
+- `features/` contains small focused calculations used by the dashboard.
+- `tests/test_core.py` covers the finance logic and hybrid coach behaviour.
+- `data/estalvia_state.json` is created locally when the app stores user data.
 
-## Development Phases
+## AI Coach
 
-- Sprint 2: first prototype and validation of the basic finance dashboard.
-- Sprint 3: Python implementation, local storage, business logic separation and automated tests.
-- Public preview: navigation cleanup, first AI Advisor version and hybrid AI Coach for saving suggestions.
-- Sprint 4: notifications, privacy/security work, usability testing and final delivery preparation.
+The coach first tries to use Ollama at `http://127.0.0.1:11434/api/chat` with `llama3.2`. If Ollama is not running, the app falls back to local rule-based answers using the same income, expense and budget data.
 
-## Future Improvements
+This keeps the demo free, local and reliable.
 
-If the project grows, the next technical steps could be:
+## Possible Future Work
 
-- Flask or FastAPI for cleaner routing.
-- SQLite for structured local storage.
-- User authentication and encrypted storage for real personal finance data.
-- A more advanced recommendation model, larger local Ollama model or external AI API integration for richer conversational savings advice.
-
-## Team Decision
-
-For this prototype stage, the team keeps the stack intentionally small. The priority is to prove that the main flows work: add transactions, review monthly totals, manage budgets and receive useful saving guidance.
-
-## AI Coach Mode
-
-The AI Coach first tries to use Ollama at `http://127.0.0.1:11434/api/chat` with `llama3.2`. If Ollama is not installed, not running or unavailable, the app automatically uses the local rule-based coach. This keeps the presentation reliable and avoids paid API usage.
+- Replace the local HTTP server with Flask or FastAPI.
+- Use SQLite instead of JSON for structured storage.
+- Add user accounts and better privacy controls.
+- Add confirmation messages after saving or resetting data.

@@ -41,13 +41,50 @@ The dashboard includes a `Restore demo` button with presentation data for budget
 
 ## Optional Ollama Mode
 
-The AI Coach can use a local Ollama model without paid APIs:
+The AI Coach can use a local Ollama model without paid APIs. This mode runs the AI on the user's own computer, so no external API key or paid AI account is required.
+
+To enable Ollama mode:
+
+1. Install Ollama from the official website:
+
+   `https://ollama.com/download`
+
+2. Open PowerShell or a terminal and download the model used by Estalv-IA:
+
+   ```powershell
+   ollama pull llama3.2
+   ```
+
+   The first download can take some time depending on the internet connection.
+
+3. Check that the model is available locally:
+
+   ```powershell
+   ollama list
+   ```
+
+   If `llama3.2` appears in the list, the model is ready.
+
+4. Run the Estalv-IA app:
+
+   ```powershell
+   cd "Estalv-IA prototype"
+   python app.py
+   ```
+
+5. Open the app in the browser:
+
+   `http://127.0.0.1:8000`
+
+6. Go to the AI Coach tab and ask a free question about the user's income, expenses, budgets or monthly saving goals.
+
+The model can also be started manually with:
 
 ```powershell
 ollama run llama3.2
 ```
 
-If Ollama is not running, the app still works with its local rule-based coach.
+If Ollama is not running or the model is not available, the app still works with its local rule-based fallback coach. In that case, the answers are simpler, but the product remains usable for the demo and for normal finance tracking.
 
 ## Tests
 
